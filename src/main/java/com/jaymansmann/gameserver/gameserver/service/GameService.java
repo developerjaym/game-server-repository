@@ -1,16 +1,24 @@
 package com.jaymansmann.gameserver.gameserver.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
+
+import com.jaymansmann.gameserver.gameserver.config.SpringConfig;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 @Service
 public class GameService {
-	@Autowired
-	private JedisPool pool;
+//	@Autowired
+//	private JedisPool pool;
 	public void test() {
+		System.out.println("Launching Redis sample. Configured with Spring");
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
+		//ApplicationContext ctx = new GenericXmlApplicationContext("applicationContext.xml");
+
+		JedisPool pool = ctx.getBean(JedisPool.class);
 		Jedis jedis = pool.getResource();
 		try {
 			String testValue = "testValueSpring";
