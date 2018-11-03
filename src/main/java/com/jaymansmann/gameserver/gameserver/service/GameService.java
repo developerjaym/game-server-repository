@@ -1,34 +1,59 @@
 package com.jaymansmann.gameserver.gameserver.service;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jaymansmann.gameserver.gameserver.config.SpringConfig;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
+import com.jaymansmann.gameserver.gameserver.model.Game;
+import com.jaymansmann.gameserver.gameserver.model.GameEvent;
+import com.jaymansmann.gameserver.gameserver.model.GameOverEvent;
+import com.jaymansmann.gameserver.gameserver.model.GameStartedEvent;
+import com.jaymansmann.gameserver.gameserver.utility.JCache;
+import com.jaymansmann.gameserver.gameserver.utility.UtilityClass;
 
 @Service
 public class GameService {
-//	@Autowired
-//	private JedisPool pool;
-	public void test() {
-		System.out.println("Launching Redis sample. Configured with Spring");
-		ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
-		//ApplicationContext ctx = new GenericXmlApplicationContext("applicationContext.xml");
 
-		JedisPool pool = ctx.getBean(JedisPool.class);
-		Jedis jedis = pool.getResource();
-		try {
-			String testValue = "testValueSpring";
+	@Autowired
+	private JCache<String, Game> games;
+	
+	public String startGame(String playerName, int playerCount) {
+		String gameId = UtilityClass.getRandomCodestring();
+		createNewGame(playerName, playerCount, gameId);
+		return gameId;
+	}
 
-			jedis.set("testKeySpring", testValue);
-			System.out.println("Value set into Redis is: " + testValue);
+	public void endGame(String gameId) {
+		Game game = getGame(gameId);
+		game.setActive(false);
+		game.getGameEvents().add(new GameOverEvent());
+	}
 
-			System.out.println("Value retrieved from Redis is: " + jedis.get("testKeySpring"));
-		} finally {
-			pool.returnResource(jedis);
-		}
+	public void receiveGameEvent(String gameId, GameEvent gameEvent) {
+		Game game = getGame(gameId);
+		game.getGameEvents().add(gameEvent);
+	}
+
+	public List<GameEvent> getGameEvent(String gameId, int mostRecentIndex) {
+		Game game = getGame(gameId);
+		return game.getGameEvents().subList(mostRecentIndex, game.getGameEvents().size());
+	}
+
+	private Game getGame(String gameId) {
+		return games.get(gameId).orElseThrow(NoSuchElementException::new);
+	}
+	
+	private void createNewGame(String playerName, int playerCount, String gameId) {
+		Game game = new Game();
+		game.setGameEvents(new ArrayList<>());
+		GameStartedEvent event = new GameStartedEvent();
+		event.setPlayer(playerName);
+		game.getGameEvents().add(event);
+		game.setId(gameId);
+		game.setPlayerCount(playerCount);
+		games.put(gameId, game);
 	}
 }
