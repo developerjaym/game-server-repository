@@ -1,10 +1,12 @@
 package com.jaymansmann.gameserver.gameserver.model;
 
 import java.util.List;
+import java.util.SortedMap;
 
 public class GameEvent {
 
 	private List<List<String>> board;
+	private SortedMap<String, String> namesToScores;
 	private String type;
 	private String message;
 	private String player;
@@ -14,6 +16,12 @@ public class GameEvent {
 	}
 	public void setBoard(List<List<String>> board) {
 		this.board = board;
+	}
+	public SortedMap<String, String> getNamesToScores() {
+		return namesToScores;
+	}
+	public void setNamesToScores(SortedMap<String, String> namesToScores) {
+		this.namesToScores = namesToScores;
 	}
 	public String getType() {
 		return type;

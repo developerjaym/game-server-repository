@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "5f53f85f-c560-4819-8337-f6e47368be5e",
+		"name": "GameServer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Game",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "aa2f0737-7f1d-44c3-afec-6ae2fe78ffae",
+						"exec": [
+							"postman.setEnvironmentVariable(\"gameId\", responseBody);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/game/start?player-name=jay&player-count=2",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"game",
+						"start"
+					],
+					"query": [
+						{
+							"key": "player-name",
+							"value": "jay"
+						},
+						{
+							"key": "player-count",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Initial Game Event",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/game/{{gameId}}/events?most-recent-index=0",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"game",
+						"{{gameId}}",
+						"events"
+					],
+					"query": [
+						{
+							"key": "most-recent-index",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Game Event",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"board\": [\n\t\t[\"a\", \"b\", \"c\"],\n\t\t[\"a\", \"b\", \"c\"]\n\t\t],\n\t\"type\": \"MOVE\",\n\t\"message\": \"None\",\n\t\"player\": \"Lucy\",\n\t\"namesToScores\": {\n\t\t\"Lucy\": 1\n\t}\n}"
+				},
+				"url": {
+					"raw": "{{host}}/game/{{gameId}}/events",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"game",
+						"{{gameId}}",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Game Events",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/game/{{gameId}}/events?most-recent-index=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"game",
+						"{{gameId}}",
+						"events"
+					],
+					"query": [
+						{
+							"key": "most-recent-index",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "End Game",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/game/{{gameId}}/end",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"game",
+						"{{gameId}}",
+						"end"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "System Message",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/game/system",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"game",
+						"system"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

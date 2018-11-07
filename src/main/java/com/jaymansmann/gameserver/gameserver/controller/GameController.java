@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jaymansmann.gameserver.gameserver.model.GameEvent;
+import com.jaymansmann.gameserver.gameserver.model.SystemMessage;
 import com.jaymansmann.gameserver.gameserver.service.GameService;
 
 @RequestMapping("/game")
@@ -40,5 +41,10 @@ public class GameController {
 	@PostMapping("/{gameId}/events")
 	public void receiveGameEvent(@PathVariable String gameId, @RequestBody GameEvent gameEvent) {
 		gameService.receiveGameEvent(gameId, gameEvent);
+	}
+	
+	@GetMapping("/system")
+	public SystemMessage getSystemMessage() {
+		return gameService.getSystemMessage();
 	}
 }

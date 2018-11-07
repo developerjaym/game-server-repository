@@ -15,8 +15,8 @@ import com.jaymansmann.gameserver.gameserver.utility.JCacheManager;
 public class CacheConfig {
 	
 	@Bean
-	public JCacheManager jCacheManager() {
-		return new JCacheManager(1, 1024);
+	public JCacheManager systemMessageCacheManager() {
+		return new JCacheManager(1, 1);
 	}//probably won't use
 	
 	@Bean
