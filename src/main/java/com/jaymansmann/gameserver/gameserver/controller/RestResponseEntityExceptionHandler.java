@@ -27,7 +27,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
 	@ExceptionHandler(value = { NoSuchElementException.class })
 	protected ResponseEntity<Object> handleNoSucElementException(RuntimeException ex, WebRequest request) {
-		;
 		LOGGER.log(Level.SEVERE, ex.toString(), ex);
 		return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
