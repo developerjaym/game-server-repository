@@ -28,6 +28,7 @@ public class CorsController {
 		MultiValueMap<String, String> newHeaders = new LinkedMultiValueMap<>(original.getHeaders());
 		newHeaders.put(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, Arrays.asList("*"));
 		newHeaders.put(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, Arrays.asList("*"));
+		newHeaders.remove(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN); // supplied by WebConfig
 		ResponseEntity<String> response2 = new ResponseEntity<>(original.getBody(), newHeaders, original.getStatusCode());
 		return response2;
 	}
